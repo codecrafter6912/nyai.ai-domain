@@ -1,0 +1,236 @@
+:root{
+  --green:#0A2823; --green-2:#0F3A33;
+  --champagne:#E9D9B4; --brass:#B8935A; --ivory:#F6F0E2; --mist:#9DB3AC;
+  --display:"Bodoni Moda","Didot","Times New Roman",serif;
+  --body:"Jost","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+body{
+  min-height:100vh;min-height:100svh;display:flex;flex-direction:column;
+  background:var(--green);color:var(--ivory);font-family:var(--body);font-weight:300;line-height:1.6;
+  overflow-x:hidden;-webkit-user-select:none;user-select:none;
+}
+/* soft vignette */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:
+    radial-gradient(120% 90% at 50% 0%, var(--green-2), transparent 70%);
+}
+canvas#dust{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+
+.hero{
+  position:relative;z-index:3;flex:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:7vh 8vw 2vh;
+}
+.notice{font-size:.95rem;letter-spacing:.32em;text-transform:uppercase;color:var(--brass);opacity:0;animation:rise 1.2s .2s forwards}
+.rule{
+  width:1px;height:56px;margin:24px auto;
+  background:linear-gradient(var(--brass),transparent);
+  transform-origin:top;transform:scaleY(0);animation:grow 1.2s .5s forwards;
+}
+.domain{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(2.2rem,13.5vw,7.5rem);line-height:1.05;letter-spacing:.05em;
+  max-width:100%;white-space:nowrap;
+  background:linear-gradient(100deg,var(--brass) 0%,var(--champagne) 30%,#fff7de 45%,var(--champagne) 60%,var(--brass) 100%);
+  background-size:250% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:sheen 7s 2.6s ease-in-out infinite;
+}
+.domain span{
+  display:inline-block;color:var(--champagne);
+  opacity:0;transform:translateY(.4em);filter:blur(8px);
+  animation:letter 1s cubic-bezier(.2,.7,.2,1) forwards;
+  animation-delay:calc(.9s + var(--i) * 70ms);
+}
+.sub{margin-top:30px;max-width:36ch;font-size:1.15rem;color:var(--mist);opacity:0;animation:rise 1.2s 2.3s forwards}
+.actions{margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;opacity:0;animation:rise 1.2s 2.7s forwards}
+.btn{
+  position:relative;overflow:hidden;isolation:isolate;
+  display:inline-flex;align-items:center;justify-content:center;font:inherit;font-weight:400;font-size:1rem;letter-spacing:.08em;
+  padding:16px 34px;text-decoration:none;cursor:pointer;
+  border:1px solid var(--brass);color:var(--ivory);background:transparent;
+  transition:color .4s,border-color .4s;
+}
+.btn::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(100deg,var(--brass),var(--champagne));
+  transform:translateY(101%);transition:transform .5s cubic-bezier(.2,.7,.2,1);
+}
+.btn:hover,.btn:focus-visible{color:var(--green);border-color:var(--champagne)}
+.btn:hover::before,.btn:focus-visible::before{transform:translateY(0)}
+.btn.primary{background:linear-gradient(100deg,var(--brass),var(--champagne));color:var(--green);border-color:transparent}
+.btn.primary::before{background:var(--ivory)}
+.btn:focus-visible{outline:2px solid var(--champagne);outline-offset:4px}
+.handle{margin-top:22px;color:var(--mist);font-size:.95rem;opacity:0;animation:rise 1.2s 3s forwards}
+.handle b{font-weight:400;color:var(--champagne)}
+
+/* sponsored ("parking") strip */
+.spons{
+  position:relative;z-index:3;width:min(960px,86vw);margin:0 auto;
+  padding:0 0 22px;text-align:center;opacity:0;animation:rise 1.2s 3.2s forwards;
+}
+.spons small{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(157,179,172,.7)}
+.cards{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:10px}
+.card{
+  flex:1 1 220px;max-width:300px;padding:12px 18px;text-align:left;text-decoration:none;color:var(--ivory);
+  border:1px solid rgba(184,147,90,.45);background:rgba(10,40,35,.6);
+  transition:border-color .3s,background .3s;
+}
+.card b{display:block;font-family:var(--display);font-weight:400;font-size:1.05rem;color:var(--champagne)}
+.card span{display:block;font-size:.85rem;color:var(--mist)}
+.card:hover,.card:focus-visible{border-color:var(--champagne);background:rgba(15,58,51,.85)}
+.card.slot{border-style:dashed}
+
+/* ad slots (hidden until AdSense is switched on in script.js) */
+.ad{position:relative;z-index:3;width:min(970px,86vw);margin:0 auto;text-align:center}
+.ad[hidden]{display:none}
+.ad-mid{padding:10px 0 14px}
+.rail{position:fixed;top:50%;transform:translateY(-50%);width:160px;margin:0}
+.rail-l{left:12px}
+.rail-r{right:12px}
+.ad-top{padding-top:34px}
+.ad-bottom{padding-bottom:12px}
+.ad small{display:block;margin-bottom:4px;font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(157,179,172,.6)}
+ins.adsbygoogle{display:block}
+ins.adsbygoogle[data-ad-status="unfilled"]{display:none}
+.linklike{margin-left:10px;padding:0;border:0;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--champagne);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.linklike:hover,.linklike:focus-visible{color:var(--ivory)}
+.dlg{
+  margin:auto;width:min(520px,88vw);padding:34px 34px 30px;
+  background:var(--green-2);color:var(--ivory);border:1px solid var(--brass);
+  -webkit-user-select:none;user-select:none;
+}
+.dlg::backdrop{background:rgba(5,20,17,.8);backdrop-filter:blur(4px)}
+.dlg h2{font-family:var(--display);font-weight:400;font-size:1.7rem;color:var(--champagne);margin-bottom:12px}
+.dlg p{color:var(--mist);font-size:.95rem;margin-bottom:12px}
+.dlg a{color:var(--champagne)}
+.dlg .btn{margin-top:10px;padding:12px 30px}
+
+/* when real ads are on, tighten the hero so the page stays as compact as possible */
+.ads-on .rule,.ads-on .handle,.ads-on .spons,.ads-on .f-note{display:none}
+.ads-on .hero{padding-top:2vh}
+.ads-on .notice{margin-bottom:16px}
+.ads-on .domain{font-size:clamp(2.2rem,min(13.5vw,13vh),6.5rem)}
+.ads-on .sub{margin-top:16px}
+.ads-on .actions{margin-top:22px}
+
+/* footer */
+.foot{
+  position:relative;z-index:3;width:min(1080px,86vw);margin:0 auto;
+  padding:14px 0 max(32px,env(safe-area-inset-bottom));
+  border-top:1px solid rgba(184,147,90,.3);
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px 16px;
+  font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mist);
+  opacity:0;animation:rise 1.2s 3.4s forwards;
+}
+.f-brand{text-align:left;font-family:var(--display);font-size:.9rem;letter-spacing:.32em;color:var(--champagne)}
+.f-ig{color:var(--mist);text-decoration:none;transition:color .3s}
+.f-ig b{font-weight:400;color:var(--champagne);letter-spacing:.08em;text-transform:none}
+.f-ig:hover,.f-ig:focus-visible{color:var(--ivory)}
+.f-ig:focus-visible{outline:2px solid var(--champagne);outline-offset:4px}
+.f-copy{text-align:right}
+.f-note{grid-column:1/-1;text-align:center;text-transform:none;letter-spacing:.04em;font-size:.72rem;opacity:.65}
+
+.toast{
+  position:fixed;left:50%;bottom:110px;z-index:5;transform:translate(-50%,20px);
+  background:var(--ivory);color:var(--green);padding:12px 22px;font-size:.9rem;
+  opacity:0;pointer-events:none;transition:.4s;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes grow{to{transform:scaleY(1)}}
+@keyframes letter{to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes sheen{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+
+/* instagram badge on the primary button */
+.btn.ig-link{display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:11px 34px 11px 22px}
+.ig-badge{
+  position:relative;flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;
+  background:var(--green);color:var(--champagne);
+  transition:transform .45s cubic-bezier(.3,1.6,.5,1);
+}
+.ig-badge::after{
+  content:"";position:absolute;inset:0;border-radius:50%;border:1px solid var(--green);
+  animation:ping 2.8s 3.6s ease-out infinite;
+}
+.lens{transform-origin:17.4px 6.6px;animation:blink 2.8s 3.6s ease-in-out infinite}
+.btn:hover .ig-badge,.btn:focus-visible .ig-badge{transform:rotate(-14deg) scale(1.12)}
+.btn.primary::after{
+  content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);
+  animation:shine 5.5s 4s ease-in-out infinite;
+}
+@keyframes ping{0%{transform:scale(1);opacity:.8}70%,100%{transform:scale(1.75);opacity:0}}
+@keyframes blink{0%,70%,100%{transform:scale(1)}80%{transform:scale(1.7)}}
+@keyframes shine{0%{left:-60%}35%,100%{left:130%}}
+
+@media (max-width:560px){
+  .actions{flex-direction:column;width:100%;max-width:340px}
+  .btn{width:100%;text-align:center}
+  .card{flex:1 1 150px;padding:10px 14px}
+  .foot{grid-template-columns:1fr;text-align:center;gap:4px;padding-top:10px;padding-bottom:max(22px,env(safe-area-inset-bottom))}
+  .f-brand,.f-copy{text-align:center}
+  .f-brand{display:none}
+  .f-copy{font-size:.68rem;letter-spacing:.1em}
+  .f-note{font-size:.68rem}
+}
+@media (max-height:720px){
+  .hero{padding-top:5vh}
+  .rule{height:36px;margin:16px auto}
+  .sub{margin-top:20px}
+  .actions{margin-top:26px}
+  .handle{margin-top:14px}
+}
+@media (max-height:680px){
+  .hero{padding-top:3.5vh}
+  .rule{height:28px;margin:12px auto}
+  .sub{margin-top:14px;font-size:1.05rem}
+  .actions{margin-top:20px}
+  .btn{padding:13px 30px}
+  .spons{padding-bottom:14px}
+  .foot{padding-top:10px;padding-bottom:24px}
+}
+/* the handle also lives in the footer, so short screens drop the duplicate to stay on one page */
+@media (max-height:780px){
+  .rule{display:none}
+  .notice{margin-bottom:22px}
+  .handle{display:none}
+  .domain{font-size:clamp(2.2rem,min(13.5vw,15vh),7.5rem)}
+}
+@media (max-height:690px){
+  .f-note{display:none}
+  .sub{font-size:1rem}
+}
+@media (max-width:560px){
+  .handle{display:none}
+  .sub{margin-top:18px}
+  .actions{margin-top:24px;gap:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition:none!important}
+  .domain span,.notice,.sub,.actions,.handle,.spons,.foot{opacity:1;transform:none;filter:none}
+  .rule{transform:none}
+  canvas#dust{display:none}
+  .ig-badge::after,.btn.primary::after{display:none}
+}
+
+/* round golden pointer (mouse devices only; JS adds .has-cur) */
+.cur{position:fixed;left:0;top:0;z-index:2147483000;pointer-events:none;opacity:0;transition:opacity .25s;will-change:transform}
+.cur i{display:block;border-radius:50%;transition:transform .22s cubic-bezier(.2,.8,.2,1),background .22s,border-color .22s}
+.cur-dot i{width:16px;height:16px;margin:-8px 0 0 -8px;
+  background:radial-gradient(circle at 35% 30%,#FFF4D6 0%,var(--champagne) 30%,var(--brass) 75%,#8A6A38 100%);
+  box-shadow:0 0 0 1.5px rgba(10,40,35,.75),0 0 14px rgba(233,217,180,.55)}
+.cur-ring i{width:42px;height:42px;margin:-21px 0 0 -21px;border:1px solid rgba(233,217,180,.55)}
+.has-cur .cur.show{opacity:1}
+.has-cur.cur-hover .cur-dot i{transform:scale(.6)}
+.has-cur.cur-hover .cur-ring i{transform:scale(1.5);background:rgba(184,147,90,.16);border:1.5px solid var(--brass)}
+.has-cur.cur-down .cur-dot i{transform:scale(.75)}
+.has-cur.cur-down .cur-ring i{transform:scale(.8)}
+.has-cur,.has-cur *{cursor:none!important}
+/* native cursor stays over ads and inside the privacy dialog */
+.has-cur.cur-off,.has-cur.cur-off *,.has-cur:has(dialog[open]),.has-cur:has(dialog[open]) *{cursor:auto!important}
+.has-cur.cur-off .cur,.has-cur:has(dialog[open]) .cur{opacity:0!important}
